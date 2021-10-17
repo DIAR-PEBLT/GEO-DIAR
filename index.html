@@ -99,7 +99,7 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>SECTOR DE RIEGO</strong><br />' + (feature.properties['SECTOR DE RIEGO'] !== null ? autolinker.link(feature.properties['SECTOR DE RIEGO'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>SECTOR DE RIEGO</strong><br />' + (feature.properties['SECTOR DE RIEGO:'] !== null ? autolinker.link(feature.properties['SECTOR DE RIEGO'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2"><strong>ÁREA (Ha)</strong><br />' + (feature.properties['ÁREA (Ha)'] !== null ? autolinker.link(feature.properties['ÁREA (Ha)'].toLocaleString()) : '') + '</td>\
