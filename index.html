@@ -6,7 +6,7 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <meta name="mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/leaflet.css"><link rel="stylesheet" href="css/L.Control.Locate.min.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
@@ -24,7 +24,7 @@
         <div id="map">
         </div>
         <script src="js/qgis2web_expressions.js"></script>
-        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
         <script src="js/multi-style-layer.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
@@ -35,9 +35,14 @@
         <script src="js/labels.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="js/leaflet-search.js"></script>
-        <script src="data/SECTORESDERIEGO_1.js"></script>
-        <script src="data/PrediosBajoRiegoHuataquita_2.js"></script>
-        <script src="data/INFRAESTRUCTURAHIDRAULICASIL_3.js"></script>
+        <script src="data/SectoresdeRiego_2.js"></script>
+        <script src="data/PrediosdeRiegoLAteral9Maazo_3.js"></script>
+        <script src="data/PrediosdeRiegoCabana_4.js"></script>
+        <script src="data/PrediosdeRiegoHuataquita_5.js"></script>
+        <script src="data/CanalesLateral9Maazo_6.js"></script>
+        <script src="data/CanalesCabana_7.js"></script>
+        <script src="data/CanalesHuataquita_8.js"></script>
+        <script src="data/InfraestructuraHidrulica_9.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
@@ -56,10 +61,11 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[-16.489480786153138,-71.58125387415542],[-14.362337016126327,-69.6076452605835]]);
+        }).fitBounds([[-15.8645708330615,-70.6092268991021],[-15.471378344289244,-70.06080139595873]]);
         var hash = new L.Hash(map);
-        map.attributionControl.setPrefix('<a href="https://pelt.gob.pe/pelt/" target="_blank">PEBLT</a> &middot; <a href="https://pelt.gob.pe/pelt/?page_id=721" title="A JS library for interactive maps">DIAR</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
         var measureControl = new L.Control.Measure({
             position: 'topleft',
             primaryLengthUnit: 'meters',
@@ -75,10 +81,23 @@
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        map.createPane('pane_GoogleHybrid_0');
-        map.getPane('pane_GoogleHybrid_0').style.zIndex = 400;
-        var layer_GoogleHybrid_0 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
-            pane: 'pane_GoogleHybrid_0',
+        map.createPane('pane_OSMStandard_0');
+        map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+        var layer_OSMStandard_0 = L.tileLayer('http://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OSMStandard_0',
+            opacity: 1.0,
+            attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OSMStandard_0;
+        map.addLayer(layer_OSMStandard_0);
+        map.createPane('pane_GoogleHybrid_1');
+        map.getPane('pane_GoogleHybrid_1').style.zIndex = 401;
+        var layer_GoogleHybrid_1 = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+            pane: 'pane_GoogleHybrid_1',
             opacity: 1.0,
             attribution: '<a href="https://www.google.at/permissions/geoguidelines/attr-guide.html">Map data ©2015 Google</a>',
             minZoom: 1,
@@ -86,9 +105,9 @@
             minNativeZoom: 0,
             maxNativeZoom: 20
         });
-        layer_GoogleHybrid_0;
-        map.addLayer(layer_GoogleHybrid_0);
-        function pop_SECTORESDERIEGO_1(feature, layer) {
+        layer_GoogleHybrid_1;
+        map.addLayer(layer_GoogleHybrid_1);
+        function pop_SectoresdeRiego_2(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -99,184 +118,45 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>SECTOR DE RIEGO</strong><br />' + (feature.properties['SECTOR DE RIEGO:'] !== null ? autolinker.link(feature.properties['SECTOR DE RIEGO'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Módulo de Riego:</strong><br />' + (feature.properties['Módulo de Riego:'] !== null ? autolinker.link(feature.properties['Módulo de Riego:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2"><strong>ÁREA (Ha)</strong><br />' + (feature.properties['ÁREA (Ha)'] !== null ? autolinker.link(feature.properties['ÁREA (Ha)'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Área (Ha):</strong><br />' + (feature.properties['Área (Ha):'] !== null ? autolinker.link(feature.properties['Área (Ha):'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_SECTORESDERIEGO_1_0(feature) {
-            switch(String(feature.properties['SECTOR DE RIEGO'])) {
-                case 'Cabana':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
+        function style_SectoresdeRiego_2_0() {
+            return {
+                pane: 'pane_SectoresdeRiego_2',
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1.0, 
+                weight: 2.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(86,217,130,0.8)',
+                fillColor: 'rgba(126,184,101,0.6509803921568628)',
                 interactive: true,
-            }
-                    break;
-                case 'Cabanilla':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(187,217,86,0.8)',
-                interactive: true,
-            }
-                    break;
-                case 'Cabanillas - Chatapujio':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(199,202,223,0.8)',
-                interactive: true,
-            }
-                    break;
-                case 'Canteria':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(39,206,184,0.8)',
-                interactive: true,
-            }
-                    break;
-                case 'Huataquita - Taya Taya':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(141,68,209,0.8)',
-                interactive: true,
-            }
-                    break;
-                case 'Lampa':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(124,191,238,0.8)',
-                interactive: true,
-            }
-                    break;
-                case 'Santa Lucia':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(225,178,69,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Vilque - Mañazo':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(112,237,78,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Yanarico':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(35,42,237,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Yocara - Caracoto':
-                    return {
-                pane: 'pane_SECTORESDERIEGO_1',
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(231,35,114,1.0)',
-                interactive: true,
-            }
-                    break;
             }
         }
-        map.createPane('pane_SECTORESDERIEGO_1');
-        map.getPane('pane_SECTORESDERIEGO_1').style.zIndex = 401;
-        map.getPane('pane_SECTORESDERIEGO_1').style['mix-blend-mode'] = 'normal';
-        var layer_SECTORESDERIEGO_1 = new L.geoJson(json_SECTORESDERIEGO_1, {
+        map.createPane('pane_SectoresdeRiego_2');
+        map.getPane('pane_SectoresdeRiego_2').style.zIndex = 402;
+        map.getPane('pane_SectoresdeRiego_2').style['mix-blend-mode'] = 'normal';
+        var layer_SectoresdeRiego_2 = new L.geoJson(json_SectoresdeRiego_2, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_SECTORESDERIEGO_1',
-            layerName: 'layer_SECTORESDERIEGO_1',
-            pane: 'pane_SECTORESDERIEGO_1',
-            onEachFeature: pop_SECTORESDERIEGO_1,
-            style: style_SECTORESDERIEGO_1_0,
+            dataVar: 'json_SectoresdeRiego_2',
+            layerName: 'layer_SectoresdeRiego_2',
+            pane: 'pane_SectoresdeRiego_2',
+            onEachFeature: pop_SectoresdeRiego_2,
+            style: style_SectoresdeRiego_2_0,
         });
-        bounds_group.addLayer(layer_SECTORESDERIEGO_1);
-        map.addLayer(layer_SECTORESDERIEGO_1);
-        function pop_PrediosBajoRiegoHuataquita_2(feature, layer) {
+        bounds_group.addLayer(layer_SectoresdeRiego_2);
+        map.addLayer(layer_SectoresdeRiego_2);
+        function pop_PrediosdeRiegoLAteral9Maazo_3(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -287,53 +167,53 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>NOMBRE</strong><br />' + (feature.properties['NOMBRE'] !== null ? autolinker.link(feature.properties['NOMBRE'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Módulo de Riego:</strong><br />' + (feature.properties['Módulo de Riego:'] !== null ? autolinker.link(feature.properties['Módulo de Riego:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2"><strong>TIPO DE CULTIVO</strong><br />' + (feature.properties['TIPO DE CULTIVO'] !== null ? autolinker.link(feature.properties['TIPO DE CULTIVO'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Área de Riego:</strong><br />' + (feature.properties['Área de Riego:'] !== null ? autolinker.link(feature.properties['Área de Riego:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2"><strong>BLOQUE DE RIEGO</strong><br />' + (feature.properties['BLOQUE DE RIEGO'] !== null ? autolinker.link(feature.properties['BLOQUE DE RIEGO'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Nombre:</strong><br />' + (feature.properties['Nombre:'] !== null ? autolinker.link(feature.properties['Nombre:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2"><strong>VOLÚMEN DE AGUA ASIGNADO</strong><br />' + (feature.properties['VOLÚMEN DE AGUA ASIGNADO'] !== null ? autolinker.link(feature.properties['VOLÚMEN DE AGUA ASIGNADO'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Cultivo:</strong><br />' + (feature.properties['Cultivo:'] !== null ? autolinker.link(feature.properties['Cultivo:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2"><strong>ÁREA BAJO RIEGO (Ha)</strong><br />' + (feature.properties['ÁREA BAJO RIEGO (Ha)'] !== null ? autolinker.link(feature.properties['ÁREA BAJO RIEGO (Ha)'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Estado del Predio:</strong><br />' + (feature.properties['Estado del Predio:'] !== null ? autolinker.link(feature.properties['Estado del Predio:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_PrediosBajoRiegoHuataquita_2_0() {
+        function style_PrediosdeRiegoLAteral9Maazo_3_0() {
             return {
-                pane: 'pane_PrediosBajoRiegoHuataquita_2',
+                pane: 'pane_PrediosdeRiegoLAteral9Maazo_3',
                 opacity: 1,
-                color: 'rgba(0,20,1,1.0)',
+                color: 'rgba(35,35,35,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(89,180,60,1.0)',
+                fillColor: 'rgba(205,166,10,1.0)',
                 interactive: true,
             }
         }
-        map.createPane('pane_PrediosBajoRiegoHuataquita_2');
-        map.getPane('pane_PrediosBajoRiegoHuataquita_2').style.zIndex = 402;
-        map.getPane('pane_PrediosBajoRiegoHuataquita_2').style['mix-blend-mode'] = 'normal';
-        var layer_PrediosBajoRiegoHuataquita_2 = new L.geoJson(json_PrediosBajoRiegoHuataquita_2, {
+        map.createPane('pane_PrediosdeRiegoLAteral9Maazo_3');
+        map.getPane('pane_PrediosdeRiegoLAteral9Maazo_3').style.zIndex = 403;
+        map.getPane('pane_PrediosdeRiegoLAteral9Maazo_3').style['mix-blend-mode'] = 'normal';
+        var layer_PrediosdeRiegoLAteral9Maazo_3 = new L.geoJson(json_PrediosdeRiegoLAteral9Maazo_3, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_PrediosBajoRiegoHuataquita_2',
-            layerName: 'layer_PrediosBajoRiegoHuataquita_2',
-            pane: 'pane_PrediosBajoRiegoHuataquita_2',
-            onEachFeature: pop_PrediosBajoRiegoHuataquita_2,
-            style: style_PrediosBajoRiegoHuataquita_2_0,
+            dataVar: 'json_PrediosdeRiegoLAteral9Maazo_3',
+            layerName: 'layer_PrediosdeRiegoLAteral9Maazo_3',
+            pane: 'pane_PrediosdeRiegoLAteral9Maazo_3',
+            onEachFeature: pop_PrediosdeRiegoLAteral9Maazo_3,
+            style: style_PrediosdeRiegoLAteral9Maazo_3_0,
         });
-        bounds_group.addLayer(layer_PrediosBajoRiegoHuataquita_2);
-        function pop_INFRAESTRUCTURAHIDRAULICASIL_3(feature, layer) {
+        bounds_group.addLayer(layer_PrediosdeRiegoLAteral9Maazo_3);
+        function pop_PrediosdeRiegoCabana_4(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -344,18 +224,282 @@
             });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2"><strong>IINFRAESTRUCTURA</strong><br />' + (feature.properties['IINFRAESTRUCTURA'] !== null ? autolinker.link(feature.properties['IINFRAESTRUCTURA'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Nombre del Predio:</strong><br />' + (feature.properties['Nombre del Predio:'] !== null ? autolinker.link(feature.properties['Nombre del Predio:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2"><strong>Datos </strong><br />' + (feature.properties['Datos '] !== null ? autolinker.link(feature.properties['Datos '].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Nombre:</strong><br />' + (feature.properties['Nombre:'] !== null ? autolinker.link(feature.properties['Nombre:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área de Riego:</strong><br />' + (feature.properties['Área de Riego:'] !== null ? autolinker.link(feature.properties['Área de Riego:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Cultivo:</strong><br />' + (feature.properties['Cultivo:'] !== null ? autolinker.link(feature.properties['Cultivo:'].toLocaleString()) : '') + '</td>\
                     </tr>\
                 </table>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_INFRAESTRUCTURAHIDRAULICASIL_3_0() {
+        function style_PrediosdeRiegoCabana_4_0() {
             return {
-                pane: 'pane_INFRAESTRUCTURAHIDRAULICASIL_3',
+                pane: 'pane_PrediosdeRiegoCabana_4',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(23,255,236,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PrediosdeRiegoCabana_4');
+        map.getPane('pane_PrediosdeRiegoCabana_4').style.zIndex = 404;
+        map.getPane('pane_PrediosdeRiegoCabana_4').style['mix-blend-mode'] = 'normal';
+        var layer_PrediosdeRiegoCabana_4 = new L.geoJson(json_PrediosdeRiegoCabana_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PrediosdeRiegoCabana_4',
+            layerName: 'layer_PrediosdeRiegoCabana_4',
+            pane: 'pane_PrediosdeRiegoCabana_4',
+            onEachFeature: pop_PrediosdeRiegoCabana_4,
+            style: style_PrediosdeRiegoCabana_4_0,
+        });
+        bounds_group.addLayer(layer_PrediosdeRiegoCabana_4);
+        function pop_PrediosdeRiegoHuataquita_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Nombre:</strong><br />' + (feature.properties['Nombre:'] !== null ? autolinker.link(feature.properties['Nombre:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Área de Riego:</strong><br />' + (feature.properties['Área de Riego:'] !== null ? autolinker.link(feature.properties['Área de Riego:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Cultivo:</strong><br />' + (feature.properties['Cultivo:'] !== null ? autolinker.link(feature.properties['Cultivo:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Bloque de Riego:</strong><br />' + (feature.properties['Bloque de Riego:'] !== null ? autolinker.link(feature.properties['Bloque de Riego:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Volumen Asiganado:</strong><br />' + (feature.properties['Volumen Asiganado:'] !== null ? autolinker.link(feature.properties['Volumen Asiganado:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Estado del Predio:</strong><br />' + (feature.properties['Estado del Predio:'] !== null ? autolinker.link(feature.properties['Estado del Predio:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_PrediosdeRiegoHuataquita_5_0() {
+            return {
+                pane: 'pane_PrediosdeRiegoHuataquita_5',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(232,43,14,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_PrediosdeRiegoHuataquita_5');
+        map.getPane('pane_PrediosdeRiegoHuataquita_5').style.zIndex = 405;
+        map.getPane('pane_PrediosdeRiegoHuataquita_5').style['mix-blend-mode'] = 'normal';
+        var layer_PrediosdeRiegoHuataquita_5 = new L.geoJson(json_PrediosdeRiegoHuataquita_5, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_PrediosdeRiegoHuataquita_5',
+            layerName: 'layer_PrediosdeRiegoHuataquita_5',
+            pane: 'pane_PrediosdeRiegoHuataquita_5',
+            onEachFeature: pop_PrediosdeRiegoHuataquita_5,
+            style: style_PrediosdeRiegoHuataquita_5_0,
+        });
+        bounds_group.addLayer(layer_PrediosdeRiegoHuataquita_5);
+        function pop_CanalesLateral9Maazo_6(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Módulo de Riego:</strong><br />' + (feature.properties['Módulo de Riego:'] !== null ? autolinker.link(feature.properties['Módulo de Riego:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Longitud (Km):</strong><br />' + (feature.properties['Longitud (Km):'] !== null ? autolinker.link(feature.properties['Longitud (Km):'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Tipo de Canal:</strong><br />' + (feature.properties['Tipo de Canal:'] !== null ? autolinker.link(feature.properties['Tipo de Canal:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Estado del Canal:</strong><br />' + (feature.properties['Estado del Canal:'] !== null ? autolinker.link(feature.properties['Estado del Canal:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CanalesLateral9Maazo_6_0() {
+            return {
+                pane: 'pane_CanalesLateral9Maazo_6',
+                opacity: 1,
+                color: 'rgba(26,91,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_CanalesLateral9Maazo_6');
+        map.getPane('pane_CanalesLateral9Maazo_6').style.zIndex = 406;
+        map.getPane('pane_CanalesLateral9Maazo_6').style['mix-blend-mode'] = 'normal';
+        var layer_CanalesLateral9Maazo_6 = new L.geoJson(json_CanalesLateral9Maazo_6, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CanalesLateral9Maazo_6',
+            layerName: 'layer_CanalesLateral9Maazo_6',
+            pane: 'pane_CanalesLateral9Maazo_6',
+            onEachFeature: pop_CanalesLateral9Maazo_6,
+            style: style_CanalesLateral9Maazo_6_0,
+        });
+        bounds_group.addLayer(layer_CanalesLateral9Maazo_6);
+        function pop_CanalesCabana_7(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Módulo de Riego:</strong><br />' + (feature.properties['Módulo de Riego:'] !== null ? autolinker.link(feature.properties['Módulo de Riego:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Longitud (Km):</strong><br />' + (feature.properties['Longitud (Km):'] !== null ? autolinker.link(feature.properties['Longitud (Km):'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Nombre del Canal:</strong><br />' + (feature.properties['Nombre del Canal:'] !== null ? autolinker.link(feature.properties['Nombre del Canal:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CanalesCabana_7_0() {
+            return {
+                pane: 'pane_CanalesCabana_7',
+                opacity: 1,
+                color: 'rgba(26,91,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_CanalesCabana_7');
+        map.getPane('pane_CanalesCabana_7').style.zIndex = 407;
+        map.getPane('pane_CanalesCabana_7').style['mix-blend-mode'] = 'normal';
+        var layer_CanalesCabana_7 = new L.geoJson(json_CanalesCabana_7, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CanalesCabana_7',
+            layerName: 'layer_CanalesCabana_7',
+            pane: 'pane_CanalesCabana_7',
+            onEachFeature: pop_CanalesCabana_7,
+            style: style_CanalesCabana_7_0,
+        });
+        bounds_group.addLayer(layer_CanalesCabana_7);
+        function pop_CanalesHuataquita_8(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Módulo de Riego:</strong><br />' + (feature.properties['Módulo de Riego:'] !== null ? autolinker.link(feature.properties['Módulo de Riego:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Longitud (Km):</strong><br />' + (feature.properties['Longitud (Km):'] !== null ? autolinker.link(feature.properties['Longitud (Km):'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Tipo de Canal:</strong><br />' + (feature.properties['Tipo de Canal:'] !== null ? autolinker.link(feature.properties['Tipo de Canal:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_CanalesHuataquita_8_0() {
+            return {
+                pane: 'pane_CanalesHuataquita_8',
+                opacity: 1,
+                color: 'rgba(26,91,255,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 1.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_CanalesHuataquita_8');
+        map.getPane('pane_CanalesHuataquita_8').style.zIndex = 408;
+        map.getPane('pane_CanalesHuataquita_8').style['mix-blend-mode'] = 'normal';
+        var layer_CanalesHuataquita_8 = new L.geoJson(json_CanalesHuataquita_8, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CanalesHuataquita_8',
+            layerName: 'layer_CanalesHuataquita_8',
+            pane: 'pane_CanalesHuataquita_8',
+            onEachFeature: pop_CanalesHuataquita_8,
+            style: style_CanalesHuataquita_8_0,
+        });
+        bounds_group.addLayer(layer_CanalesHuataquita_8);
+        function pop_InfraestructuraHidrulica_9(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>Infraestructura:</strong><br />' + (feature.properties['Infraestructura:'] !== null ? autolinker.link(feature.properties['Infraestructura:'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Datos :</strong><br />' + (feature.properties['Datos :'] !== null ? autolinker.link(feature.properties['Datos :'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_InfraestructuraHidrulica_9_0() {
+            return {
+                pane: 'pane_InfraestructuraHidrulica_9',
                 radius: 6.4,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
@@ -366,12 +510,12 @@
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(255,3,7,1.0)',
-                interactive: false,
+                interactive: true,
             }
         }
-        function style_INFRAESTRUCTURAHIDRAULICASIL_3_1() {
+        function style_InfraestructuraHidrulica_9_1() {
             return {
-                pane: 'pane_INFRAESTRUCTURAHIDRAULICASIL_3',
+                pane: 'pane_InfraestructuraHidrulica_9',
                 radius: 1.4,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
@@ -382,55 +526,45 @@
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(255,3,7,1.0)',
-                interactive: false,
+                interactive: true,
             }
         }
-        map.createPane('pane_INFRAESTRUCTURAHIDRAULICASIL_3');
-        map.getPane('pane_INFRAESTRUCTURAHIDRAULICASIL_3').style.zIndex = 403;
-        map.getPane('pane_INFRAESTRUCTURAHIDRAULICASIL_3').style['mix-blend-mode'] = 'normal';
-        var layer_INFRAESTRUCTURAHIDRAULICASIL_3 = new L.geoJson.multiStyle(json_INFRAESTRUCTURAHIDRAULICASIL_3, {
+        map.createPane('pane_InfraestructuraHidrulica_9');
+        map.getPane('pane_InfraestructuraHidrulica_9').style.zIndex = 409;
+        map.getPane('pane_InfraestructuraHidrulica_9').style['mix-blend-mode'] = 'normal';
+        var layer_InfraestructuraHidrulica_9 = new L.geoJson.multiStyle(json_InfraestructuraHidrulica_9, {
             attribution: '',
-            interactive: false,
-            dataVar: 'json_INFRAESTRUCTURAHIDRAULICASIL_3',
-            layerName: 'layer_INFRAESTRUCTURAHIDRAULICASIL_3',
-            pane: 'pane_INFRAESTRUCTURAHIDRAULICASIL_3',
-            onEachFeature: pop_INFRAESTRUCTURAHIDRAULICASIL_3,
+            interactive: true,
+            dataVar: 'json_InfraestructuraHidrulica_9',
+            layerName: 'layer_InfraestructuraHidrulica_9',
+            pane: 'pane_InfraestructuraHidrulica_9',
+            onEachFeature: pop_InfraestructuraHidrulica_9,
             pointToLayers: [function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_INFRAESTRUCTURAHIDRAULICASIL_3_0(feature));
+                return L.circleMarker(latlng, style_InfraestructuraHidrulica_9_0(feature));
             },function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_INFRAESTRUCTURAHIDRAULICASIL_3_1(feature));
+                return L.circleMarker(latlng, style_InfraestructuraHidrulica_9_1(feature));
             },
         ]});
-        bounds_group.addLayer(layer_INFRAESTRUCTURAHIDRAULICASIL_3);
-        map.addLayer(layer_INFRAESTRUCTURAHIDRAULICASIL_3);
+        bounds_group.addLayer(layer_InfraestructuraHidrulica_9);
+        map.addLayer(layer_InfraestructuraHidrulica_9);
         var baseMaps = {};
-        L.control.layers(baseMaps,{'<img src="legend/INFRAESTRUCTURAHIDRAULICASIL_3.png" /> INFRAESTRUCTURA HIDRAULICA SIL': layer_INFRAESTRUCTURAHIDRAULICASIL_3,'<img src="legend/PrediosBajoRiegoHuataquita_2.png" /> Predios Bajo Riego - Huataquita': layer_PrediosBajoRiegoHuataquita_2,'SECTORES DE RIEGO<br /><table><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_Cabana0.png" /></td><td>Cabana</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_Cabanilla1.png" /></td><td>Cabanilla</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_CabanillasChatapujio2.png" /></td><td>Cabanillas - Chatapujio</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_Canteria3.png" /></td><td>Canteria</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_HuataquitaTayaTaya4.png" /></td><td>Huataquita - Taya Taya</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_Lampa5.png" /></td><td>Lampa</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_SantaLucia6.png" /></td><td>Santa Lucia</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_VilqueMañazo7.png" /></td><td>Vilque - Mañazo</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_Yanarico8.png" /></td><td>Yanarico</td></tr><tr><td style="text-align: center;"><img src="legend/SECTORESDERIEGO_1_YocaraCaracoto9.png" /></td><td>Yocara - Caracoto</td></tr></table>': layer_SECTORESDERIEGO_1,"Google Hybrid": layer_GoogleHybrid_0,}).addTo(map);
+        L.control.layers(baseMaps,{'<img src="legend/InfraestructuraHidrulica_9.png" /> Infraestructura Hidráulica': layer_InfraestructuraHidrulica_9,'<img src="legend/CanalesHuataquita_8.png" /> Canales Huataquita': layer_CanalesHuataquita_8,'<img src="legend/CanalesCabana_7.png" /> Canales Cabana': layer_CanalesCabana_7,'<img src="legend/CanalesLateral9Maazo_6.png" /> Canales Lateral 9 Mañazo': layer_CanalesLateral9Maazo_6,'<img src="legend/PrediosdeRiegoHuataquita_5.png" /> Predios de Riego Huataquita': layer_PrediosdeRiegoHuataquita_5,'<img src="legend/PrediosdeRiegoCabana_4.png" /> Predios de Riego Cabana': layer_PrediosdeRiegoCabana_4,'<img src="legend/PrediosdeRiegoLAteral9Maazo_3.png" /> Predios de Riego LAteral 9 Mañazo': layer_PrediosdeRiegoLAteral9Maazo_3,'<img src="legend/SectoresdeRiego_2.png" /> Sectores de Riego': layer_SectoresdeRiego_2,"Google Hybrid": layer_GoogleHybrid_1,"OSM Standard": layer_OSMStandard_0,},{collapsed:false}).addTo(map);
         setBounds();
         map.addControl(new L.Control.Search({
-            layer: layer_INFRAESTRUCTURAHIDRAULICASIL_3,
+            layer: layer_InfraestructuraHidrulica_9,
             initial: false,
             hideMarkerOnCollapse: true,
-            propertyName: 'IINFRAESTRUCTURA'}));
+            propertyName: 'Infraestructura:'}));
         document.getElementsByClassName('search-button')[0].className +=
          ' fa fa-binoculars';
-        resetLabels([layer_SECTORESDERIEGO_1]);
-        map.on("zoomend", function(){
-            resetLabels([layer_SECTORESDERIEGO_1]);
-        });
-        map.on("layeradd", function(){
-            resetLabels([layer_SECTORESDERIEGO_1]);
-        });
-        map.on("layerremove", function(){
-            resetLabels([layer_SECTORESDERIEGO_1]);
-        });
         </script>
     </body>
 </html>
